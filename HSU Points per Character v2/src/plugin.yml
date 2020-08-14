@@ -1,0 +1,17 @@
+main: me.gallent.hsupoints.PointCounter
+name: HSUPointCounter
+version: 1.1
+author: Gallent
+api-version: 1.15
+
+commands:
+  pointcounter:
+    aliases: pc
+    
+permissions:
+  pointCounter.give:
+    default: op
+  pointCounter.basic:
+    default: true
+  pointCounter.viewOther:
+    default: op
