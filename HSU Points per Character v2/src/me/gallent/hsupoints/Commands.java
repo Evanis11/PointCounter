@@ -211,8 +211,6 @@ public class Commands implements CommandExecutor, Listener{
 					}
 					this.playerFile=new File(playerDataFolder, player.getUniqueId().toString()+".yml");
 					reloadPData();
-					/*this.charSel = args[2].toString();
-					String newChar = args[3].toString();*/
 					int i = 0;
 					Boolean charOne=false;
 					this.charSel = "";
