@@ -272,7 +272,7 @@ public class PointsSystem {
 		sPoint = CraftItemStack.asBukkitCopy(nmsSPoint);
 		gPoint = CraftItemStack.asBukkitCopy(nmsGPoint);
 
-
+		
 
 		return;
 	}

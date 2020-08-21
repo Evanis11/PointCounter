@@ -53,10 +53,7 @@ systemv2:
           unlocked: false
           aversion: false
       nature:
-        base:
-          points: 0
-          unlocked: false
-          aversion: false
+        base: 0
         ecomancy:
           points: 0
           unlocked: false

@@ -749,7 +749,8 @@ public class Commands implements CommandExecutor, Listener{
 	//login
 	@EventHandler
 	public void login(PlayerJoinEvent event2) {
-		this.player= event2.getPlayer();
+		this.player= (Player) event2.getPlayer();
+		this.playerFile=new File(playerDataFolder, player.getUniqueId().toString()+".yml");
 		reloadPData();
 		getPData().set("DisplayName", player.getName().toString());
 		if(!getPData().contains("characters")&&player.hasPermission("pointCounter.basic")) {
