@@ -347,7 +347,7 @@ public class PointsSystem {
 				this.spendAmt=50.0;
 				player.sendMessage("Could not spend "+oldSpendAmt+" points: cannot have more than 50 in a tier 1 magic.");
 			}
-			magicSpend();
+			magicSpend(1);
 
 		}
 
@@ -366,7 +366,7 @@ public class PointsSystem {
 				this.spendAmt=50.0;
 				player.sendMessage("Could not spend "+oldSpendAmt+" points: cannot have more than 50 in a tier 1 magic.");
 			}
-			magicSpend();
+			magicSpend(1);
 		}
 
 		//nature
@@ -384,7 +384,7 @@ public class PointsSystem {
 				this.spendAmt=50.0;
 				player.sendMessage("Could not spend "+oldSpendAmt+" points: cannot have more than 50 in a tier 1 magic.");
 			}
-			magicSpend();
+			magicSpend(1);
 		}
 
 		//tier 2
@@ -404,7 +404,7 @@ public class PointsSystem {
 				player.sendMessage(ChatColor.RED+"You cannot spend in this magic: You have not unlocked this magic.");
 				return;
 			}
-			magicSpend();
+			magicSpend(2);
 		}
 		//earth
 		if(cmds.varB.equalsIgnoreCase("earth")||cmds.varB.equalsIgnoreCase("geomancy")) {
@@ -422,7 +422,7 @@ public class PointsSystem {
 				return;
 			}
 
-			magicSpend();
+			magicSpend(2);
 		}
 		//fire
 		if(cmds.varB.equalsIgnoreCase("Fire")||cmds.varB.equalsIgnoreCase("pyromancy")) {
@@ -439,7 +439,7 @@ public class PointsSystem {
 				player.sendMessage(ChatColor.RED+"You cannot spend in this magic: You have not unlocked this magic.");
 				return;
 			}
-			magicSpend();
+			magicSpend(2);
 
 		}
 		//air
@@ -457,7 +457,7 @@ public class PointsSystem {
 				player.sendMessage(ChatColor.RED+"You cannot spend in this magic: You have not unlocked this magic.");
 				return;
 			}
-			magicSpend();
+			magicSpend(2);
 		}
 
 
@@ -477,7 +477,7 @@ public class PointsSystem {
 				player.sendMessage(ChatColor.RED+"You cannot spend in this magic: You have not unlocked this magic.");
 				return;
 			}
-			magicSpend();
+			magicSpend(2);
 
 		}
 		if(cmds.varB.equalsIgnoreCase("shadow")||cmds.varB.equalsIgnoreCase("umbramancy")||cmds.varB.equalsIgnoreCase("void")) {
@@ -493,7 +493,7 @@ public class PointsSystem {
 				player.sendMessage(ChatColor.RED+"You cannot spend in this magic: You have not unlocked this magic.");
 				return;
 			}
-			magicSpend();
+			magicSpend(2);
 
 		}
 
@@ -512,7 +512,7 @@ public class PointsSystem {
 				player.sendMessage(ChatColor.RED+"You cannot spend in this magic: You have not unlocked this magic.");
 				return;
 			}
-			magicSpend();
+			magicSpend(2);
 
 		}
 		if(cmds.varB.equalsIgnoreCase("ecomancy")||cmds.varB.equalsIgnoreCase("plants")||cmds.varB.equalsIgnoreCase("animals")) {
@@ -529,7 +529,7 @@ public class PointsSystem {
 				player.sendMessage(ChatColor.RED+"You cannot spend in this magic: You have not unlocked this magic.");
 				return;
 			}
-			magicSpend();
+			magicSpend(2);
 
 		}
 		if(cmds.varB.equalsIgnoreCase("death")||cmds.varB.equalsIgnoreCase("necromancy")) {
@@ -546,7 +546,7 @@ public class PointsSystem {
 				player.sendMessage(ChatColor.RED+"You cannot spend in this magic: You have not unlocked this magic.");
 				return;
 			}
-			magicSpend();
+			magicSpend(2);
 
 		}
 
@@ -575,7 +575,7 @@ public class PointsSystem {
 
 	}
 
-	public void magicSpend() {
+	public void magicSpend(int tier) {
 
 		if(spendAmt<=Integer.sum(mPointsUnspent, gPointsUnspent)){
 			double spendTrue=spendAmt;
@@ -583,9 +583,29 @@ public class PointsSystem {
 				spendTrue= (Double) spendAmt/2;
 				player.sendMessage(ChatColor.RED+"WARNING: You have an aversion to this magic. You will only recieve "+spendTrue+" points in the magic.");
 			}
-			if(spendAmt>mPointsUnspent) {
+			if(tier==2) {
+				if(spendAmt>mPointsUnspent) {
+
+					cmds.getPData().set(pointPath+".points", oldPoints+spendTrue);
+					spendAmt=spendAmt-mPointsUnspent;
+					gPointsUnspent=(int) (gPointsUnspent-spendAmt);
+					cmds.player.sendMessage(ChatColor.GOLD+"You spend "+mPointsUnspent.toString()+" magic points and "+spendAmt+" general points.");
+					cmds.getPData().set(mPPath, 0);
+					cmds.getPData().set(gPPath, gPointsUnspent);
+					cmds.savePData();
+					return;
+				}
 
 				cmds.getPData().set(pointPath+".points", oldPoints+spendTrue);
+				mPointsUnspent=(int) (mPointsUnspent-spendAmt);
+				cmds.player.sendMessage(ChatColor.GOLD+"You spend "+spendAmt+" magic points.");
+				cmds.getPData().set(mPPath, mPointsUnspent);
+				cmds.savePData();
+				return;
+			}
+			if(spendAmt>mPointsUnspent) {
+
+				cmds.getPData().set(pointPath, oldPoints+spendTrue);
 				spendAmt=spendAmt-mPointsUnspent;
 				gPointsUnspent=(int) (gPointsUnspent-spendAmt);
 				cmds.player.sendMessage(ChatColor.GOLD+"You spend "+mPointsUnspent.toString()+" magic points and "+spendAmt+" general points.");
@@ -595,7 +615,7 @@ public class PointsSystem {
 				return;
 			}
 
-			cmds.getPData().set(pointPath+".points", oldPoints+spendTrue);
+			cmds.getPData().set(pointPath, oldPoints+spendTrue);
 			mPointsUnspent=(int) (mPointsUnspent-spendAmt);
 			cmds.player.sendMessage(ChatColor.GOLD+"You spend "+spendAmt+" magic points.");
 			cmds.getPData().set(mPPath, mPointsUnspent);

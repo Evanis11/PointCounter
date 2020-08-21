@@ -609,7 +609,7 @@ public class Commands implements CommandExecutor, Listener{
 					this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aThese can be banked to a specific character by holding them in your hand and typing \"/Pointcounter Points Bank <amount>\""));
 					this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aThe point types are as follows:"));
 					this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&dMagic Points &aare used to increase your magic schools. You must advance a tier 1 school (Elemental, Cosmic, Nature) to 50 before you can specialize."));
-					this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&bStat Points &aare used to increase your physical stats such as Strength, Agility, Health, and craftsmanship. These have no prerequisits."));
+					this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&bStat Points &aare used to increase your physical stats such as Strength, Agility, Health, and Craftsmanship. These have no prerequisits."));
 					this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6General Points &aare able to be used as either of the above points."));
 					this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aTo use the points, use \"/PointCounter points spend <amount> <category>\"."));
 					this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aTier II magic has to be unlocked first. Once a tier 1 school is at 50, you can type \"/PointCounter Points Unlock <Magic Type>\". You can only unlock 4 magics."));
@@ -634,7 +634,7 @@ public class Commands implements CommandExecutor, Listener{
 				this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6Page 1: Please read all pages before starting"));
 				this.player.sendMessage("");
 				this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aTo use the plugin, you must first have a character."));
-				this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aStart by using \"PointCounter Character Create\" followed by the name of your character."));
+				this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aStart by using \"/PointCounter Character Create\" followed by the name of your character."));
 				player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aWhen prompted, click the item that matches your race (or racial aversion for custom races.)"));
 				player.sendMessage("");
 				player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Page 1 of 4"));
@@ -843,6 +843,7 @@ public class Commands implements CommandExecutor, Listener{
 			event.setCancelled(true);
 			this.player=(Player) event.getWhoClicked();
 			this.playerFile=new File(playerDataFolder, player.getUniqueId().toString()+".yml");
+			reloadPData();
 			String activeChar= getPData().getString("ActiveCharacter");
 			if(!(charName==null)) {
 				activeChar = charName;
