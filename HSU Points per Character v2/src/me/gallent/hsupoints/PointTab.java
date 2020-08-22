@@ -59,8 +59,7 @@ public class PointTab implements TabCompleter, Listener{
 			if(args[1].equalsIgnoreCase("Switch")||args[1].equalsIgnoreCase("Delete")||args[1].equalsIgnoreCase("Rename")) {
 				List<String> tabComp = new ArrayList<String>();
 				if(args.length==3) {
-					cmds.player=(Player) sender;
-					cmds.reloadPData();
+					cmds.pCheck(sender);
 					cmds.getPData().getConfigurationSection("characters").getKeys(false).forEach(key -> {
 						tabComp.add(key);
 					});
@@ -84,6 +83,7 @@ public class PointTab implements TabCompleter, Listener{
 				tab1.add("Spend");
 				tab1.add("View");
 				tab1.add("Unlock");
+				tab1.add("Withdraw");
 
 				List<String> narrow=new ArrayList<String>();
 				for (String a : tab1) {
@@ -192,26 +192,52 @@ public class PointTab implements TabCompleter, Listener{
 				return narrow;
 			}
 			if(args[1].equalsIgnoreCase("Unlock")&&args.length==3) {
-					List<String> pointTypes = new ArrayList<String>();
-					pointTypes.add("Pyromancy");
-					pointTypes.add("Geomancy");
-					pointTypes.add("Hydromancy");
-					pointTypes.add("Aeromancy");
-					pointTypes.add("Lunimancy");
-					pointTypes.add("Umbramancy");
-					pointTypes.add("Vivimancy");
-					pointTypes.add("Ecomancy");
-					pointTypes.add("Necromancy");
+				List<String> pointTypes = new ArrayList<String>();
+				pointTypes.add("Pyromancy");
+				pointTypes.add("Geomancy");
+				pointTypes.add("Hydromancy");
+				pointTypes.add("Aeromancy");
+				pointTypes.add("Lunimancy");
+				pointTypes.add("Umbramancy");
+				pointTypes.add("Vivimancy");
+				pointTypes.add("Ecomancy");
+				pointTypes.add("Necromancy");
 
+				List<String> narrow=new ArrayList<String>();
+				for (String a : pointTypes) {
+					if(a.toLowerCase().startsWith(args[2].toLowerCase())) 
+						narrow.add(a);
+				}
+
+				return narrow;
+			}
+			if(args[1].equalsIgnoreCase("Withdraw")) {
+				if(args.length==3) {
+					List<String> value = new ArrayList<String>();
+					value.add("1");
 					List<String> narrow=new ArrayList<String>();
-					for (String a : pointTypes) {
+					for (String a : value) {
 						if(a.toLowerCase().startsWith(args[2].toLowerCase())) 
 							narrow.add(a);
 					}
 
 					return narrow;
-			}
+				}
+				if(args.length==4) {
+					List<String> pointTypes = new ArrayList<String>();
+					pointTypes.add("Magic");
+					pointTypes.add("General");
+					pointTypes.add("Physical");
 
+					List<String> narrow=new ArrayList<String>();
+					for (String a : pointTypes) {
+						if(a.toLowerCase().startsWith(args[3].toLowerCase())) 
+							narrow.add(a);
+					}
+
+					return narrow;
+				}
+			}
 		}
 
 		if(args[0].equalsIgnoreCase("give")&&sender.hasPermission("pointCounter.give")) {

@@ -57,7 +57,7 @@ public class PointsSystem {
 	public NBTTagCompound gpCompound=null;
 	public net.minecraft.server.v1_15_R1.ItemStack nmsGPoint =null;
 
-	public String nbtTest=null;
+	public Byte nbtTest=(byte) 0;
 
 	public void curStatSys(){
 		ConfigurationSection section1 = PointCounter.getInstance().getConfig().getConfigurationSection("systemv2");
@@ -140,8 +140,7 @@ public class PointsSystem {
 			this.oldVal=cmds.getPData().getDouble("characters."+activeChar+".points.unspent.magic");
 			Double newVal = oldVal + bankAmt;
 			cmds.getPData().set("characters."+activeChar+".points.unspent.magic", newVal);
-			if(bankAmt==1)player.sendMessage(ChatColor.GOLD+"You have banked "+bankAmt+" magic point.");
-			player.sendMessage(ChatColor.GOLD+"You have banked "+bankAmt+" magic points.");
+			player.sendMessage((bankAmt==1) ? ChatColor.GOLD+"You have banked one magic point." : ChatColor.GOLD+"You have banked "+bankAmt+" magic points.");
 			cmds.savePData();
 			return;
 		}
@@ -151,8 +150,7 @@ public class PointsSystem {
 			this.oldVal=cmds.getPData().getDouble("characters."+activeChar+".points.unspent.physical");
 			Double newVal = oldVal + bankAmt;
 			cmds.getPData().set("characters."+activeChar+".points.unspent.physical", newVal);
-			if(bankAmt==1) player.sendMessage(ChatColor.GOLD+"You have banked "+bankAmt+" stat point.");
-			player.sendMessage(ChatColor.GOLD+"You have banked "+bankAmt+" stat points.");
+			player.sendMessage((bankAmt==1) ? ChatColor.GOLD+"You have banked one stat point." : ChatColor.GOLD+"You have banked "+bankAmt+" stat points.");
 			cmds.savePData();
 			return;
 		}
@@ -167,8 +165,7 @@ public class PointsSystem {
 			this.oldVal=cmds.getPData().getDouble("characters."+activeChar+".points.unspent.general");
 			Double newVal = oldVal + bankAmt;
 			cmds.getPData().set("characters."+activeChar+".points.unspent.general", newVal);
-			if(bankAmt==1) player.sendMessage(ChatColor.GOLD+"You have banked "+bankAmt+" general point.");
-			player.sendMessage(ChatColor.GOLD+"You have banked "+bankAmt+" general points.");
+			player.sendMessage((bankAmt==1) ? ChatColor.GOLD+"You have banked one general point." : ChatColor.GOLD+"You have banked "+bankAmt+" general points.");
 			cmds.savePData();
 			return;
 		}
@@ -190,7 +187,7 @@ public class PointsSystem {
 
 
 		try {
-			this.mPoint.setType(Material.matchMaterial(mPItem));
+			this.mPoint.setType(Material.matchMaterial(mPItem, false));
 		} catch (Exception e) {
 			this.mPoint.setType(Material.QUARTZ);
 			Bukkit.getConsoleSender().sendMessage(ChatColor.RED+mPItem+" not found.");
@@ -214,7 +211,7 @@ public class PointsSystem {
 		String sPItem = PointCounter.instance.getConfig().getString("pointItem.physical.type");
 
 		try {
-			this.sPoint.setType(Material.matchMaterial(sPItem));
+			this.sPoint.setType(Material.matchMaterial(sPItem, false));
 		} catch (Exception e) {
 			this.sPoint.setType(Material.QUARTZ);
 			Bukkit.getConsoleSender().sendMessage(ChatColor.RED+sPItem+" not found.");
@@ -237,7 +234,8 @@ public class PointsSystem {
 		String gPItem = PointCounter.instance.getConfig().getString("pointItem.general.type");
 
 		try {
-			this.gPoint.setType(Material.matchMaterial(gPItem));
+			this.gPoint.setType(Material.matchMaterial(gPItem, false));
+			Bukkit.getConsoleSender().sendMessage("gpoint:"+gPItem);
 		} catch (Exception e) {
 			this.gPoint.setType(Material.ENDER_PEARL);
 			Bukkit.getConsoleSender().sendMessage(ChatColor.RED+gPItem+" not found.");
@@ -262,9 +260,9 @@ public class PointsSystem {
 		this.mpCompound = (nmsMPoint.hasTag()) ? nmsMPoint.getTag() : new NBTTagCompound();
 		this.spCompound = (nmsSPoint.hasTag()) ? nmsSPoint.getTag() : new NBTTagCompound();
 		this.gpCompound = (nmsGPoint.hasTag()) ? nmsGPoint.getTag() : new NBTTagCompound();
-		this.mpCompound.setString("isPoint", "Yes");
-		this.spCompound.setString("isPoint", "Yes");
-		this.gpCompound.setString("isPoint", "Yes");
+		this.mpCompound.setByte("isPoint", (byte) 1);
+		this.spCompound.setByte("isPoint", (byte) 1);
+		this.gpCompound.setByte("isPoint", (byte) 1);
 		nmsMPoint.setTag(mpCompound);
 		nmsSPoint.setTag(spCompound);
 		nmsGPoint.setTag(gpCompound);
@@ -279,36 +277,36 @@ public class PointsSystem {
 
 
 	public boolean checkM() {
-		this.nbtTest=mpCompound.getString("isPoint");
+		this.nbtTest=mpCompound.getByte("isPoint");
 		this.nmsMPoint= CraftItemStack.asNMSCopy(mPoint);
 		if(this.nmsMPoint.hasTag()) {
 			Bukkit.getConsoleSender().sendMessage("Tag Detected");
 		}
-		if(this.nbtTest=="Yes") {
+		if(this.nbtTest==(byte) 1) {
 			return true;
 		}
 		return false;
 	}
 
 	public boolean checkS() {
-		this.nbtTest=spCompound.getString("isPoint");
+		this.nbtTest=spCompound.getByte("isPoint");
 		this.nmsSPoint= CraftItemStack.asNMSCopy(sPoint);
 		if(this.nmsSPoint.hasTag()) {
 			Bukkit.getConsoleSender().sendMessage("Tag Detected");
 		}
-		if(this.nbtTest=="Yes") {
+		if(this.nbtTest==(byte) 1) {
 			return true;
 		}
 		return false;
 	}
 
 	public boolean checkG() {
-		this.nbtTest=gpCompound.getString("isPoint");
+		this.nbtTest=gpCompound.getByte("isPoint");
 		this.nmsGPoint= CraftItemStack.asNMSCopy(mPoint);
 		if(this.nmsGPoint.hasTag()) {
 			Bukkit.getConsoleSender().sendMessage("Tag Detected");
 		}
-		if(this.nbtTest=="Yes") {
+		if(this.nbtTest==(byte) 1) {
 			return true;
 		}
 		return false;
